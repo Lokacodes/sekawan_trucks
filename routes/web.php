@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\KendaraanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.home');
+});
+
+Route::get('/trucks', [KendaraanController::class, 'index'])->name('trucks');
+Route::post('/trucks/create', [KendaraanController::class, 'store']);
+Route::get('/trucks/update', [KendaraanController::class, 'update']);
+
+Route::get('/requests', function () {
+    return view('layouts.requests');
 });
