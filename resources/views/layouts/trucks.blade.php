@@ -1,6 +1,11 @@
 @extends('main')
 
 @section('content')
+    @if (session('message'))
+        <script>
+            alert("{{ session('message') }}");
+        </script>
+    @endif
 
     <div class="container mt-3">
         <div class="row">
@@ -14,6 +19,8 @@
                 </button>
             </div>
         </div>
+
+        {{-- table --}}
         <div class="table-responsive">
             <table class="table table-striped mt-1">
                 <thead>
@@ -52,8 +59,9 @@
                 </tbody>
             </table>
         </div>
+        {{-- end of table --}}
 
-        <!-- Modal -->
+        <!-- Modal tambah -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -62,7 +70,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        @if (count($errors) > 0)
+                        {{-- @if (count($errors) > 0)
                             <div class="alert alert-danger">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -70,7 +78,7 @@
                                     @endforeach
                                 </ul>
                             </div>
-                        @endif
+                        @endif --}}
                         <!-- form validasi -->
                         <form action="/trucks/create" method="post">
                             {{ csrf_field() }}
@@ -102,6 +110,7 @@
                 </div>
             </div>
         </div>
+        {{-- end of modal tambah --}}
 
         <!-- Modal Edit-->
         <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -112,7 +121,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        @if (count($errors) > 0)
+                        {{-- @if (count($errors) > 0)
                             <div class="alert alert-danger">
                                 <ul>
                                     @foreach ($errors->all() as $error)
@@ -120,7 +129,7 @@
                                     @endforeach
                                 </ul>
                             </div>
-                        @endif
+                        @endif --}}
                         <!-- form validasi -->
                         <form id="formEdit" action="/trucks/update" method="GET">
                             <div class="form-group">
@@ -159,9 +168,8 @@
                 </div>
             </div>
         </div>
-
+        <!-- end of Modal Edit-->
     </div>
-
     <script>
         // Get all "Edit" buttons with the class "btn-warning"
         const editButtons = document.querySelectorAll('.btn-warning');

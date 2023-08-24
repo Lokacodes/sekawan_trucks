@@ -42,13 +42,14 @@ class KendaraanController extends Controller
 
         if ($validator->fails()) {
             return redirect()->route('trucks')
+                ->withMessage('Data gagal ditambahkan')
                 ->withErrors($validator)
                 ->withInput();
         }
 
         Kendaraan::create($data);
 
-        return redirect()->route('trucks');
+        return redirect()->route('trucks')->withmessage('Data berhasil ditambahkan');
     }
 
     /**
@@ -90,7 +91,7 @@ class KendaraanController extends Controller
 
         $item->update($data);
 
-        return redirect()->route('trucks');
+        return redirect()->route('trucks')->withmessage('Data berhasil dirubah');
     }
 
     /**
