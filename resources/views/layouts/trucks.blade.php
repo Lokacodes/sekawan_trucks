@@ -33,17 +33,18 @@
                         $no = 1;
                     @endphp
                     @foreach ($kendaraans as $kendaraan)
-                        <tr>
+                        <tr class="dataRows">
                             <th scope="row">{{ $no++ }}</th>
-                            <td class="">{{ $kendaraan['nama_kendaraan'] }}</td>
-                            <td>{{ $kendaraan['jenis_kendaraan'] }}</td>
-                            <td>{{ $kendaraan['plat_nomor'] }}</td>
-                            <td>{{ $kendaraan['tipe_BBM'] }}</td>
-                            <td>{{ $kendaraan['penggunaan_BBM'] }}</td>
-                            <td>{{ $kendaraan['status_kendaraan'] }}</td>
-                            <td>
+                            <td scope="row" style="display:none;">{{ $kendaraan['id'] }}</td>
+                            <td scope="row">{{ $kendaraan['nama_kendaraan'] }}</td>
+                            <td scope="row">{{ $kendaraan['jenis_kendaraan'] }}</td>
+                            <td scope="row">{{ $kendaraan['plat_nomor'] }}</td>
+                            <td scope="row">{{ $kendaraan['tipe_BBM'] }}</td>
+                            <td scope="row">{{ $kendaraan['penggunaan_BBM'] }}</td>
+                            <td scope="row">{{ $kendaraan['status_kendaraan'] }}</td>
+                            <td scope="row">
                                 <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#modalEdit">Edit</button>
+                                    data-bs-target="#modalEdit" id="editPopUp">Edit</button>
                                 <button type="button" class="btn btn-sm btn-danger">Delete</button>
                         </tr>
                     @endforeach
@@ -121,12 +122,10 @@
                             </div>
                         @endif
                         <!-- form validasi -->
-                        <form action="/trucks/update" method="GET">
-                            {{ csrf_field() }}
-
+                        <form id="formEdit" action="/trucks/update" method="GET">
                             <div class="form-group">
                                 <label for="nama_kendaraan">Nama Kendaraan</label>
-                                <input class="form-control" type="text" name="nama_kendaraan">
+                                <input class="form-control" type="text" name="nama_kendaraan" value="">
                             </div>
                             <div class="form-group">
                                 <label for="jenis_kendaraan">Jenis Kendaraan</label>
@@ -140,6 +139,15 @@
                                 <label for="tipe_BBM">Tipe BBM</label>
                                 <input class="form-control" type="text" name="tipe_BBM">
                             </div>
+                            <div class="form-group">
+                                <label for="penggunaan_BBM">Penggunaan BBM</label>
+                                <input class="form-control" type="text" name="penggunaan_BBM">
+                            </div>
+                            <div class="form-group">
+                                <label for="status_kendaraan">Status</label>
+                                <input class="form-control" type="text" name="status_kendaraan">
+                            </div>
+                            {{ csrf_field() }}
                             <br>
                             <div class="d-flex justify-content-end">
                                 <button type="button" class="me-2 btn btn-sm btn-secondary"
@@ -155,15 +163,39 @@
     </div>
 
     <script>
-        edit() {
-            alert("hahahah");
-        }
-        $("#modalEdit").on(click(), function(e) {
-            var sourceElement = e.relatedTarget;
-            /*e.relatedTarget gives you which element invoked modal*/
-            var id = $(sourceElement).closest('tr').find("td:first").text();
-            /*using sourceElement you can easily fetch id */
+        // Get all "Edit" buttons with the class "btn-warning"
+        const editButtons = document.querySelectorAll('.btn-warning');
+        const formEdit = document.querySelector('#formEdit');
 
+        // Attach a click event handler to each "Edit" button
+        editButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Get the parent row of the clicked "Edit" button
+                const row = this.closest('.dataRows'); // Assumes "dataRows" class is used for rows
+
+                // Get data from the row cells
+                const rowData = [];
+                const cells = row.querySelectorAll('td');
+                cells.forEach(cell => {
+                    rowData.push(cell.textContent);
+                });
+
+                // You can now use rowData for further processing or display
+                console.log(rowData);
+
+                // You can also populate the data in a modal for editing
+                const editModal = document.querySelector(
+                    '#modalEdit'); // Assuming you have a modal with id "modalEdit"
+                const modalFields = editModal.querySelectorAll(
+                    'input'); // Assuming you use input fields in the modal
+
+                // Populate modal input fields with corresponding data
+                for (let i = 0; i < modalFields.length; i++) {
+                    modalFields[i].value = rowData[i + 1]; // Skip the first cell which is the row number
+                }
+
+                formEdit.action = "/trucks/update/" + rowData[0];
+            });
         });
     </script>
 @endsection

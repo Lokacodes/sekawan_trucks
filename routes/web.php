@@ -21,7 +21,7 @@ Route::get('/', function () {
 
 Route::get('/trucks', [KendaraanController::class, 'index'])->name('trucks');
 Route::post('/trucks/create', [KendaraanController::class, 'store']);
-Route::get('/trucks/update', [KendaraanController::class, 'update']);
+Route::get('/trucks/update/{id}', [KendaraanController::class, 'update']);
 
 Route::get('/requests', function () {
     return view('layouts.requests');

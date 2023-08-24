@@ -78,6 +78,8 @@ class KendaraanController extends Controller
             'plat_nomor' => 'required|max:255',
             'jenis_kendaraan' => 'required|max:255',
             'tipe_BBM' => 'required|max:255',
+            'penggunaan_BBM' => 'required|max:255',
+            'status_kendaraan' => 'required|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -87,6 +89,8 @@ class KendaraanController extends Controller
         }
 
         $item->update($data);
+
+        return redirect()->route('trucks');
     }
 
     /**
